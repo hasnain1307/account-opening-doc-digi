@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from ngo_pages import ngo_data
 from private_pages import private_data
 from partnership_pages import partnership_data
+from deposit import cash_slip
 app = FastAPI()
 
 # Configure CORS settings
@@ -60,3 +61,16 @@ async def process_files(files: list[UploadFile] = File(...)):
     partnership_opening = partnership_data(file_paths)
 
     return partnership_opening
+
+
+@app.post("/deposit_slip")
+async def process_files(files: UploadFile = File(...)):
+    # Save the uploaded files and get their paths
+    file_path = files.filename
+    with open(file_path, "wb") as f:
+        f.write(files.file.read())
+
+    # Call your ngo_data function with the list of file paths
+    deposit_slip = cash_slip(file_path)
+
+    return deposit_slip
