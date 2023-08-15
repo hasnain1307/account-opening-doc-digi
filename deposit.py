@@ -23,7 +23,8 @@ def cash_slip(image_path: str):
     }
 
     # Example usage:
-    result = aws_process_cheque(image_path)
+    image = cv2.imread(image_path)
+    result = aws_process_cheque(image)
     print(result)
     result = result['Blocks']
     handwritten_text = []
